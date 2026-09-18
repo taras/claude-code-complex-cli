@@ -1,0 +1,15 @@
+{
+  "name": "effection-downloader",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Concurrent file downloader built with Effection: bounded concurrency, error propagation, Ctrl-C cancellation and partial-file cleanup.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node test/run-all.mjs",
+    "download": "node src/cli.mjs"
+  },
+  "dependencies": {
+    "effection": "^4.1.1"
+  }
+}
