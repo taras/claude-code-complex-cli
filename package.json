@@ -1,0 +1,17 @@
+{
+  "name": "complex-cli-download-all",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "download-all": "node --conditions=development src/download-all.ts",
+    "test": "node --conditions=development --test test/download-all.test.ts"
+  },
+  "dependencies": {
+    "@effectionx/task-buffer": "link:/Users/tarasmankovski/Repositories/frontside/effectionx/task-buffer",
+    "effection": "link:/Users/tarasmankovski/Repositories/frontside/effectionx/node_modules/effection"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
+  }
+}
