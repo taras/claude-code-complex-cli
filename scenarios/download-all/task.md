@@ -22,68 +22,54 @@ Before implementing anything, start with:
 
 Use the local website as the authoritative documentation for this task.
 
-Follow only links whose origin is `http://localhost:8000`. Do not use:
+Follow its local documentation links. Do not use production documentation, preview deployments, GitHub documentation or PRs, search results, or previously cached Effection information.
 
-- frontside.com;
-- Netlify previews;
-- production documentation;
-- GitHub documentation or PRs;
-- search-engine results;
-- previously cached Effection documentation.
+If `llms.txt` points off localhost, use the corresponding local page if one exists and report the routing problem.
 
-For the Effection agent rules, read only:
+Do not inspect Effection or EffectionX implementation source, tests, Git history, branches, or pull requests before completing the first implementation.
 
-    /Users/tarasmankovski/Repositories/frontside/effection/AGENTS.md
+Do not invent APIs or preemptively add workarounds for hypothetical package behavior. Implement according to the documented guarantees. If verification later contradicts those guarantees, report and investigate the contradiction.
 
-Do not inspect Effection or EffectionX implementation source, tests, Git history, branches, or pull requests before your first implementation. The local EffectionX directory described below is provided only as a dependency source.
+## Dependencies
 
-Do not invent APIs. If a relevant behavior is not documented, identify that gap instead of assuming it.
+Use the same physical Effection installation as the local EffectionX checkout:
 
-## Local EffectionX packages
+    pnpm add "effection@link:/Users/tarasmankovski/Repositories/frontside/effectionx/node_modules/effection"
 
 You may use any EffectionX package you discover through the local documentation.
 
-Do not install any `@effectionx/*` package from npm.
-
-For each `@effectionx/<package>` dependency you choose, install it from:
-
-    /Users/tarasmankovski/Repositories/frontside/effectionx/<package>
-
-With pnpm, use this form:
+Do not install `@effectionx/*` packages from npm. Install each selected package with:
 
     pnpm add "@effectionx/<package>@link:/Users/tarasmankovski/Repositories/frontside/effectionx/<package>"
 
-The linked packages expose their current source through the `development` export condition. Run every command that executes application or test code with that condition enabled, for example:
+Run application and test code with the `development` export condition:
 
-    node --conditions=development --test
-    node --conditions=development path/to/program.ts
+    node --conditions=development ...
 
-You may instead set:
-
-    NODE_OPTIONS=--conditions=development
-
-Before relying on a linked package, verify its resolution with:
+Before relying on a linked package, verify its resolution:
 
     node --conditions=development --input-type=module -e "console.log(import.meta.resolve('@effectionx/<package>'))"
 
-The result must point inside:
+It must resolve inside:
 
     /Users/tarasmankovski/Repositories/frontside/effectionx
 
-Do not replace the local dependency with an npm version before finishing.
+The local dependency checkout is frozen for this evaluation. Do not update, build, edit, or switch branches in it.
 
 ## Process
 
 1. Read the local documentation.
-2. Implement a complete first version without inspecting library source or experimentally reverse-engineering undocumented behavior.
-3. Then run focused tests covering:
+2. Implement a complete first version without inspecting library source or probing undocumented behavior.
+3. Test:
    - successful downloads;
    - the five-download concurrency limit;
-   - one download failing while others are active or queued;
-   - Ctrl-C or explicit halt;
+   - failure while other work is active and queued;
+   - explicit halt;
+   - real Ctrl-C/SIGINT;
    - removal of partial files;
+   - no queued work starting after shutdown begins;
    - no network or filesystem activity after shutdown completes.
-4. Debug normally after the first implementation if tests expose a problem.
+4. Only after the first implementation, debug any behavior contradicted by those tests.
 
 Keep the implementation focused. Do not add unrelated abstractions or features.
 
@@ -91,11 +77,11 @@ Keep the implementation focused. Do not add unrelated abstractions or features.
 
 Report:
 
-- the documentation pages used;
-- every EffectionX package considered;
-- every EffectionX package installed;
-- the resolved local path for each installed package;
-- which behavior came directly from documentation;
-- which behavior had to be inferred;
-- any missing or ambiguous documentation;
-- the verification commands and results.
+- documentation pages used, in order;
+- EffectionX packages considered and why each was accepted or rejected;
+- installed packages and their resolved local paths;
+- behavior taken directly from documentation;
+- behavior inferred or defined by the application;
+- documentation or package behavior contradicted by testing;
+- whether implementation source was inspected after the first implementation;
+- verification commands and results.
