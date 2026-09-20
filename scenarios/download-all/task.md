@@ -1,54 +1,101 @@
-You are building a Node.js CLI that downloads a large collection of files.
+Implement a Node.js TypeScript CLI function:
 
-Implement:
-
-```ts
-downloadAll(urls, destination)
-```
+    downloadAll(urls, destination)
 
 Requirements:
 
-- Download up to 5 files concurrently.
-- Use the standard Promise-based `fetch()` API.
-- Write each response to disk using Node.js APIs.
-- If any download fails, stop all other downloads and propagate the error.
-- If the user presses Ctrl-C, stop all downloads in progress.
-- Partially written files must be deleted when their download is interrupted or fails.
-- Print progress as each file completes.
-- The command must not exit while any download or cleanup operation is still running.
+- Download every URL into `destination`.
+- Run no more than five downloads concurrently.
+- Use the standard Promise-based `fetch()` API for HTTP.
+- Use Node.js APIs to write files.
+- If one download fails, stop the remaining work and propagate the error.
+- Ctrl-C must stop all active and queued work.
+- Remove partial files during failure or cancellation.
+- Report progress while downloads run.
+- Do not return or exit while network activity, filesystem activity, or required cleanup is still running.
 
-Before implementing, read the current Effection project material starting here:
+## Documentation
 
-http://localhost:8000
+Before implementing anything, start with:
 
-Follow links from that site when they appear relevant, including its AI-agent resources and API documentation. Treat the local site as the authoritative version for this exercise. Do not independently switch to another Effection preview or the production documentation. If the local site links to an externally hosted agent resource, you may follow that link.
+    http://localhost:8000/llms.txt
 
-Important constraints:
+Use the local website as the authoritative documentation for this task.
 
-- Do not inspect the local documentation site’s source files, Git history, pull requests, or change descriptions.
-- Do not infer Effection APIs from other concurrency libraries.
-- Do not invent Effection APIs.
-- Prefer documented Effection idioms over custom lifecycle abstractions.
-- You may use ordinary Node.js knowledge freely.
-- Do not inspect Effection’s implementation source unless the public documentation proves insufficient.
-- Do not experimentally probe undocumented Effection behavior before producing your first implementation. The purpose of the first pass is to determine whether the published material is sufficient.
-- You may and should run the completed program and write tests for its observable behavior.
+Follow only links whose origin is `http://localhost:8000`. Do not use:
 
-After implementing it:
+- frontside.com;
+- Netlify previews;
+- production documentation;
+- GitHub documentation or PRs;
+- search-engine results;
+- previously cached Effection documentation.
 
-1. Test successful downloads.
-2. Test that concurrency never exceeds 5.
-3. Test failure of one download while others are active.
-4. Test Ctrl-C while downloads are active.
-5. Verify that no partial files remain after failure or interruption.
-6. Verify that no network or filesystem work continues after shutdown has completed.
+For the Effection agent rules, read only:
 
-Then report:
+    /Users/tarasmankovski/Repositories/frontside/effection/AGENTS.md
 
-- the final implementation;
-- which Effection concepts and APIs you used;
-- exactly where in the Effection material you learned each non-obvious Effection-specific fact;
-- anything you had to infer rather than learn directly;
-- anything you could not determine from the documentation;
-- any documentation that was misleading, incorrect, or missing;
-- any implementation you initially considered but rejected after finding a documented Effection idiom.
+Do not inspect Effection or EffectionX implementation source, tests, Git history, branches, or pull requests before your first implementation. The local EffectionX directory described below is provided only as a dependency source.
+
+Do not invent APIs. If a relevant behavior is not documented, identify that gap instead of assuming it.
+
+## Local EffectionX packages
+
+You may use any EffectionX package you discover through the local documentation.
+
+Do not install any `@effectionx/*` package from npm.
+
+For each `@effectionx/<package>` dependency you choose, install it from:
+
+    /Users/tarasmankovski/Repositories/frontside/effectionx/<package>
+
+With pnpm, use this form:
+
+    pnpm add "@effectionx/<package>@link:/Users/tarasmankovski/Repositories/frontside/effectionx/<package>"
+
+The linked packages expose their current source through the `development` export condition. Run every command that executes application or test code with that condition enabled, for example:
+
+    node --conditions=development --test
+    node --conditions=development path/to/program.ts
+
+You may instead set:
+
+    NODE_OPTIONS=--conditions=development
+
+Before relying on a linked package, verify its resolution with:
+
+    node --conditions=development --input-type=module -e "console.log(import.meta.resolve('@effectionx/<package>'))"
+
+The result must point inside:
+
+    /Users/tarasmankovski/Repositories/frontside/effectionx
+
+Do not replace the local dependency with an npm version before finishing.
+
+## Process
+
+1. Read the local documentation.
+2. Implement a complete first version without inspecting library source or experimentally reverse-engineering undocumented behavior.
+3. Then run focused tests covering:
+   - successful downloads;
+   - the five-download concurrency limit;
+   - one download failing while others are active or queued;
+   - Ctrl-C or explicit halt;
+   - removal of partial files;
+   - no network or filesystem activity after shutdown completes.
+4. Debug normally after the first implementation if tests expose a problem.
+
+Keep the implementation focused. Do not add unrelated abstractions or features.
+
+## Final report
+
+Report:
+
+- the documentation pages used;
+- every EffectionX package considered;
+- every EffectionX package installed;
+- the resolved local path for each installed package;
+- which behavior came directly from documentation;
+- which behavior had to be inferred;
+- any missing or ambiguous documentation;
+- the verification commands and results.
