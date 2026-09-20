@@ -1,0 +1,17 @@
+{
+  "name": "complex-cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --conditions=development --test 'src/**/*.test.ts'"
+  },
+  "dependencies": {
+    "@effectionx/task-buffer": "link:/Users/tarasmankovski/Repositories/frontside/effectionx/task-buffer",
+    "effection": "link:/Users/tarasmankovski/Repositories/frontside/effectionx/node_modules/effection"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
+  }
+}
