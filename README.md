@@ -11,6 +11,20 @@ This README is the program. Running it runs an exercise:
 xmd run README.md
 ```
 
+## Methodology
+
+[`docs/methodology.md`](docs/methodology.md) is the method these exercises serve: shape
+agent behaviour by giving a model the smallest set of facts it cannot safely infer, then
+verify the behaviour rather than asking the model's opinion of the library. It is written
+as a prompt, for the agent doing the documentation work.
+
+The harness is the instrument for the parts of that method which need one. The task is
+answered before the assessment question is ever shown, because asking first primes the
+evaluator. Every run is a fresh session in its own worktree, and the transcript is kept.
+Scenario prompts are files rather than prose inside a program, so the identical task can
+be rerun against improved documentation — the iteration name is what tells one run from
+the next, and the draft pull request is where the two are compared.
+
 ## What a run does
 
 1. Creates a worktree of this repository on a branch of its own, so nothing touches the
