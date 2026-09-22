@@ -5,11 +5,20 @@ library's published material, asks it afterwards how difficult that library was 
 correctly, and leaves both answers behind as a draft pull request. The point is not the
 code the agent writes — it is what the exercise reveals about the documentation.
 
-This README is the program. Running it runs an exercise:
+This README is the program. Each agent is a section of it, so running the README runs the
+exercise with every agent in turn, and naming a section runs one:
 
 ```
-xmd run README.md
+xmd run README.md          claude, then codex
+xmd run README.md#claude   claude alone
+xmd run README.md#codex    codex alone
 ```
+
+Every run is named, and runs meant to be compared share a name — `sweep-3`,
+`after-agents-md-fix`. The name is asked once, here, whichever way the program is run, and
+it leads every branch name and pull request title.
+
+<Ask schema={{type:"string",minLength:1,description:"What to call this iteration, for the branch names and pull request titles."}} question="What is this iteration called?" as="iteration" />
 
 ## Methodology
 
@@ -27,9 +36,9 @@ the next, and the draft pull request is where the two are compared.
 
 ## What a run does
 
-A run is one agent doing one scenario. The entrypoint sweeps a scenario across every
-agent, one run after another, because a mistake both agents make is evidence about the
-documentation while a mistake only one makes usually is not.
+A run is one agent doing one scenario. Running every agent is worth the wait: a mistake
+both agents make is evidence about the documentation, while a mistake only one makes
+usually is not.
 
 Each run:
 
@@ -72,12 +81,16 @@ no reading of Effection's source.
 
 ## Run it
 
-The sweep asks what to call this iteration and then runs `download-all` with `claude` and
-with `codex`. The iteration name is what tells one sweep of a scenario from the next —
-`sweep-3`, `after-agents-md-fix` — and it leads every branch name and pull request title,
-so the runs that share a name are the ones to compare.
+The sections below are the entrypoints. Each runs `download-all` unless `<Exercise>` is
+given another scenario, and both share the iteration name asked for at the top, so the
+whole-README run produces two runs that can be compared.
 
-Naming everything asks nothing: `<Sweep scenario="download-all" agents={["codex"]} iteration="sweep-3" />`.
-A single run on its own is `<Exercise scenario="download-all" agent="codex" iteration="sweep-3" />`.
+A run with nothing left to ask is `<Exercise scenario="download-all" agent="codex" iteration="sweep-3" />`.
 
-<Sweep />
+## claude
+
+<Exercise agent="claude" iteration={iteration} />
+
+## codex
+
+<Exercise agent="codex" iteration={iteration} />
