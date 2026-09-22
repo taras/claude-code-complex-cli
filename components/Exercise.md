@@ -46,7 +46,7 @@ printf '%s-%s-%s-%s' "{iteration}" "{agent}" "{props.scenario}" "$(date +%Y%m%d-
 
 <Agent name={agent}>
 <ApproveAll>
-<Session name="exercise">
+<Session name={naming.stdout}>
 
 ```sh exec as="checkout"
 printf '%s' "$PWD"

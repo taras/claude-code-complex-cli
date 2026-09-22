@@ -27,10 +27,16 @@ the next, and the draft pull request is where the two are compared.
 
 ## What a run does
 
+A run is one agent doing one scenario. The entrypoint sweeps a scenario across every
+agent, one run after another, because a mistake both agents make is evidence about the
+documentation while a mistake only one makes usually is not.
+
+Each run:
+
 1. Creates a worktree of this repository on a branch of its own, so nothing touches the
    current checkout.
-2. Sends the scenario's task prompt to the agent, which reads the documentation, writes
-   the implementation, and tests it.
+2. Sends the scenario's task prompt to the agent in a session of its own, which reads the
+   documentation, writes the implementation, and tests it.
 3. Asks the scenario's assessment question in the same session, so it is answered from
    the work just done rather than from general impressions.
 4. Writes `transcript.md` — both prompts verbatim, and both replies.
@@ -66,10 +72,12 @@ no reading of Effection's source.
 
 ## Run it
 
-The run asks which agent should do the work and what to call this iteration, and uses the
-`download-all` scenario unless told otherwise. The iteration name is what tells one run of
-a scenario from the next — `sweep-3`, `after-agents-md-fix` — and it leads both the branch
-name and the pull request title. Naming all three asks nothing:
-`<Exercise scenario="download-all" agent="codex" iteration="sweep-3" />`.
+The sweep asks what to call this iteration and then runs `download-all` with `claude` and
+with `codex`. The iteration name is what tells one sweep of a scenario from the next —
+`sweep-3`, `after-agents-md-fix` — and it leads every branch name and pull request title,
+so the runs that share a name are the ones to compare.
 
-<Exercise />
+Naming everything asks nothing: `<Sweep scenario="download-all" agents={["codex"]} iteration="sweep-3" />`.
+A single run on its own is `<Exercise scenario="download-all" agent="codex" iteration="sweep-3" />`.
+
+<Sweep />
